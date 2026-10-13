@@ -1,0 +1,30 @@
+/* MOON MART v0.9 — stateful environmental props. Decorative layer never catches input. */
+.v09-layer{position:absolute;inset:0;z-index:3;pointer-events:none;overflow:hidden}
+.v09-layer[hidden]{display:none!important}
+.v09-layer svg{width:100%;height:100%;display:block;overflow:visible}
+.v09-layer .v09-lit{filter:drop-shadow(0 0 11px #7affdf)}
+.v09-layer .v09-bulb{animation:v09light 2.8s ease-in-out infinite}
+.v09-layer .v09-monitor{animation:v09screen 4.3s ease-in-out infinite}
+.v09-layer .v09-slit{filter:drop-shadow(0 4px 8px #0009)}
+.v09-layer .v09-panel{filter:drop-shadow(0 6px 6px #000b)}
+.v09-layer .v09-door-open{animation:v09door .85s cubic-bezier(.18,.72,.26,1) both;transform-box:fill-box;transform-origin:100% 50%}
+.v09-layer .v09-drawer-open{animation:v09drawer .65s cubic-bezier(.14,.76,.28,1) both}
+.v09-layer .v09-shutter-open{animation:v09shutter 1.25s cubic-bezier(.12,.74,.32,1) both}
+.v09-layer .v09-glimmer{animation:v09glimmer 2s ease-in-out infinite alternate}
+.v09-layer .v09-unlocked{font-family:ui-monospace,monospace;font-size:13px;font-weight:bold;letter-spacing:1px;fill:#d6ffec;paint-order:stroke;stroke:#001018;stroke-width:3px}
+.v09-scene-state{display:flex;gap:6px;align-items:center;flex-wrap:wrap;padding:7px 2px 2px;font-size:10px}
+.v09-scene-state strong{color:#b9cbd3;font-size:10px;margin-right:4px}
+.v09-chip{display:inline-flex;align-items:center;gap:4px;min-height:25px;border:1px solid #4c6571;background:#112434;color:#9fb3c3;padding:3px 9px;border-radius:30px;font-weight:700}
+.v09-chip.done{background:#173a34;color:#b6f8e4;border-color:#4fbaa1}
+.v09-chip:before{content:'○';color:#8294a2;font-size:11px}
+.v09-chip.done:before{content:'✓';color:#90f3ca}
+.v09-layer.is-changing{animation:v09arrive .65s ease both}
+@keyframes v09arrive{0%{opacity:.18;filter:brightness(1.8)}100%{opacity:1;filter:none}}
+@keyframes v09light{0%,100%{opacity:.78}50%{opacity:1}}
+@keyframes v09screen{0%,100%{opacity:.7}53%{opacity:1}}
+@keyframes v09door{from{transform:scaleX(1)}to{transform:scaleX(.16)}}
+@keyframes v09drawer{from{transform:translateY(-12px);opacity:.4}to{transform:translateY(0);opacity:1}}
+@keyframes v09shutter{from{transform:translateY(0)}to{transform:translateY(-102%)}}
+@keyframes v09glimmer{from{opacity:.45}to{opacity:1}}
+@media(max-width:560px){.v09-scene-state{gap:4px;padding-top:7px}.v09-chip{font-size:9px;padding:2px 7px;min-height:24px}}
+@media(prefers-reduced-motion:reduce){.v09-layer *, .v09-layer{animation:none!important;transition:none!important}.v09-layer .v09-door-open{transform:scaleX(.16)}.v09-layer .v09-shutter-open{transform:translateY(-102%)}}
