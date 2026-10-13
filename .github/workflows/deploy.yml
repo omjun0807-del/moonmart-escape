@@ -1,0 +1,53 @@
+name: Deploy MOON MART escape
+on:
+  push:
+    branches: [main]
+    paths:
+      - '*.zip'
+      - '.github/workflows/deploy.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: github-pages
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Unpack verified game bundle
+        shell: bash
+        run: |
+          set -euo pipefail
+          zip_file="$(find . -maxdepth 1 -type f -name '*.zip' -print -quit)"
+          if [[ -z "$zip_file" ]]; then
+            echo "::error::게임 ZIP이 없습니다. 저장소 최상위에 v0.3 ZIP을 업로드하세요."
+            exit 1
+          fi
+          mkdir -p _extract _site
+          unzip -q "$zip_file" -d _extract
+          src="_extract/MOON_MART_v0.3"
+          for file in index.html theme-v2.css theme-v3.css assets/scene-shop.webp; do
+            test -s "$src/$file" || { echo "::error::ZIP에 필요한 파일이 없습니다: $file"; exit 1; }
+          done
+          cp "$src/index.html" "$src/theme-v2.css" "$src/theme-v3.css" _site/
+          cp -R "$src/assets" _site/assets
+          touch _site/.nojekyll
+          echo "출시 후보: MOON MART v0.3"
+          find _site -maxdepth 2 -type f
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v4
+        with:
+          path: _site
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
