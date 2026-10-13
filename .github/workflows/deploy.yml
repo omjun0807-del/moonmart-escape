@@ -4,6 +4,9 @@ on:
     branches: [main]
     paths:
       - '*.zip'
+      - 'index.html'
+      - 'theme-v4.css'
+      - '.github/workflows/deploy.yml'
   workflow_dispatch:
 
 permissions:
@@ -40,8 +43,12 @@ jobs:
           done
           cp "$src/index.html" "$src/theme-v2.css" "$src/theme-v3.css" _site/
           cp -R "$src/assets" _site/assets
+          if [[ -f index.html && -f theme-v4.css ]]; then
+            cp index.html theme-v4.css _site/
+            echo "v0.4 interactive source override applied"
+          fi
           touch _site/.nojekyll
-          echo "출시 후보: MOON MART v0.3"
+          echo "출시 후보: MOON MART v0.4"
           find _site -maxdepth 2 -type f
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v4
