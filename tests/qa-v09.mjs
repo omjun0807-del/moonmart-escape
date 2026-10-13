@@ -23,7 +23,7 @@ try {
     await page.locator('[data-puzzle="register"] input').fill('427');
     await page.locator('[data-puzzle="register"] button[type="submit"]').click();
     await page.waitForFunction(()=>window.__moonMartTest.state().flags.register);
-    assert.equal(await page.locator('#v09StateReadout .v09-chip.done').filter({hasText:'계산대 서랍'}).count(),1,'Drawer state visible');
+    await page.locator('#v09StateReadout .v09-chip.done').filter({hasText:'계산대 서랍'}).waitFor({state:'visible',timeout:5000});
     await page.locator('#dialogClose').click();
     await page.locator('#inventory [data-item]').filter({hasText:'창고 열쇠'}).click();
     await page.locator('#objectGrid [data-action="storageDoor"]').click();
