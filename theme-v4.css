@@ -1,0 +1,42 @@
+/* MOON MART v0.4 — interactive inventory / surveillance UI */
+.scene-live-overlay{pointer-events:none;position:absolute;inset:0;z-index:1;overflow:hidden}
+.scene-live-overlay .live-status{position:absolute;left:12px;top:14px;padding:6px 9px;background:#06151fe1;color:#b4e3d3;border:1px solid #669b9875;font:900 9px ui-monospace,monospace;letter-spacing:.12em;z-index:2;box-shadow:0 3px 13px #0006}
+.scene-live-overlay.is-off .live-status{color:#ffb2a2;border-color:#b8656570}
+.ambient-beam{position:absolute;inset:-35%;background:linear-gradient(119deg,transparent 40%,#abffe909 51%,transparent 59%);animation:moonSweep 12s ease-in-out infinite alternate}
+@keyframes moonSweep{from{translate:-9% 0}to{translate:9% 0}}
+.scene[data-room=storage].powered .ambient-beam{background:linear-gradient(110deg,transparent 35%,#fdf8dd28 50%,transparent 70%)}
+.item-guidance{font-size:11px;color:#b6bec9;margin:9px 1px 0;line-height:1.5}
+.inventory{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.item-tile{display:flex;align-items:stretch;min-width:0;background:linear-gradient(130deg,#253343,#1c2a39);border:1px solid #606e7c;border-radius:5px;transition:border-color .15s,box-shadow .15s}
+.item-tile.is-selected{border-color:#ffe19b;box-shadow:0 0 0 2px #ffe0a542,0 5px 20px #0004;background:linear-gradient(130deg,#51452d,#263342)}
+.item-tile button[data-item]{flex:1;min-width:0;border:0;background:none;display:flex;align-items:center;text-align:left;padding:9px 6px;color:#f2e9d5;gap:7px;font-weight:800}
+.item-tile button[data-item] span:last-child{overflow-wrap:anywhere}
+.item-tile .item-info{flex:0 0 31px!important;min-width:31px;padding:8px 4px;color:#d3d3ca;background:#2f3e4b;border:0;border-left:1px solid #65707c8c;border-radius:0 4px 4px 0;font-size:17px;text-align:center}
+.item-tile button:hover{background:#385167a5}.item-tile.is-selected button[data-item]{color:#ffedbb}
+.device-detail{display:flex;align-items:center;gap:20px;padding:22px;background:linear-gradient(135deg,#071d22,#0e3241);border:1px solid #477a7f;margin:0 0 14px}
+.device-detail strong{display:block;font-size:13px;color:#9ce2d3;letter-spacing:.1em}.device-detail p{font-size:12px;margin:5px 0}
+.battery-pictogram{position:relative;background:linear-gradient(95deg,#46535a 0%,#e0e3d0 16%,#e2c88b 17%,#f7e0a1 75%,#6b7380 77%);box-shadow:0 4px 22px #000a;min-width:104px;text-align:center;padding:12px 7px;color:#332b25;font-size:18px;font-weight:950;letter-spacing:.15em;transform:rotate(-10deg);border-radius:4px}
+.battery-pictogram span{position:absolute;top:0;right:3px;font-size:12px}.battery-slot{background:repeating-linear-gradient(135deg,#131d28 0 16px,#182838 16px 32px);border:2px solid #506072;padding:23px 14px;margin:14px 0;font:900 19px ui-monospace,monospace;display:flex;justify-content:space-between;box-shadow:inset 0 0 28px #000c}
+.battery-slot span{color:#f2ac9e;border:1px solid #ba6865;padding:5px 10px;font-size:10px;letter-spacing:.12em}
+.cctv-topline{padding:10px 11px;background:#071a21;color:#93e2cf;border:1px solid #3b6f73;display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;font:700 10px ui-monospace,monospace;letter-spacing:.07em;margin-bottom:10px}
+.cctv-topline span{color:#f4aa96}.cctv-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;margin:13px 0}
+.cctv-frame{display:grid;gap:0;min-width:0;padding:0;background:#0b171f;border:2px solid #506779;border-radius:5px;overflow:hidden;text-align:left;color:#dce7e7;box-shadow:inset 0 0 13px #0008;min-height:175px;transition:transform .15s,border-color .15s}
+.cctv-frame:hover:not(:disabled){transform:translateY(-2px);border-color:#d1c08e}.cctv-frame:disabled{opacity:.45;cursor:default;filter:grayscale(.7)}
+.cctv-frame .frame-head{display:flex;justify-content:space-between;align-items:center;padding:7px 8px;background:#1b3340;font:700 9px ui-monospace,monospace;color:#cce4e4;letter-spacing:.06em}
+.cctv-frame .frame-head b:last-child{color:#fb8c7d}
+.cctv-frame .frame-visual{height:83px;position:relative;overflow:hidden;display:grid;place-items:center;background:linear-gradient(160deg,#1a3139,#07161b);color:#add9d1}
+.cctv-frame .frame-visual:before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(0deg,transparent 0 4px,#0310144a 4px 6px),linear-gradient(0deg,#112b3580,transparent);z-index:1}
+.cctv-frame .frame-visual:after{content:"";position:absolute;width:92px;height:58px;bottom:-15px;left:-11px;border:9px solid #53828b3e;transform:skew(-12deg)}
+.cctv-frame .frame-visual i{font-style:normal;font-size:58px;color:#8cc8c3;text-shadow:0 0 20px #7ff4db77;z-index:1;transform:skew(-6deg)}
+.cctv-frame .frame-visual.power{background:linear-gradient(130deg,#03131a,#153040)}.cctv-frame .frame-visual.shutter{background:linear-gradient(180deg,#30515e,#101d28)}
+.cctv-frame .frame-time{padding:8px 9px 2px;color:#f4d7a6;font:900 16px ui-monospace,monospace;letter-spacing:.03em}
+.cctv-frame .frame-name{padding:0 9px 8px;color:#bed0d3;font-size:11px}
+.cctv-timeline{display:flex;flex-wrap:wrap;gap:6px;align-items:center;min-height:49px;padding:8px 10px;background:linear-gradient(100deg,#142736,#102531);border:1px solid #345e66}
+.cctv-timeline .time-token{display:inline-flex;align-items:center;padding:7px 9px;border:1px solid #9bc1bb;background:#245457;color:#dcfaf0;font:800 11px ui-monospace,monospace}
+.cctv-timeline .time-empty{color:#91a4ad;font-size:11px}
+.cctv-complete{position:relative;display:flex;align-items:center;justify-content:center;flex-direction:column;min-height:192px;background:radial-gradient(ellipse at 50% 40%,#287e7869 0%,#0c2b36 41%,#05151f 80%);border:1px solid #6bada8;margin-bottom:18px;overflow:hidden}
+.cctv-complete:before{content:"";position:absolute;inset:0;opacity:.16;background:repeating-linear-gradient(0deg,transparent 0px,transparent 3px,#fff 4px)}
+.cctv-complete-symbol{font-size:112px;color:#e5f7dd;line-height:1.1;filter:drop-shadow(0 0 24px #9cfce48f);position:relative}
+.cctv-complete span{font:800 10px ui-monospace,monospace;letter-spacing:.08em;color:#abddce;position:relative}
+@media(max-width:600px){.scene-live-overlay .live-status{font-size:8px;padding:5px 7px}.inventory{gap:5px}.item-tile button[data-item]{padding:9px 5px;font-size:11px}.item-tile .item-info{flex-basis:31px}.item-guidance{font-size:10px}.cctv-frame{min-height:153px}.cctv-frame .frame-visual{height:67px}.cctv-frame .frame-time{font-size:13px;padding:6px 7px 0}.cctv-frame .frame-name{font-size:10px;padding:0 7px 5px}.cctv-frame .frame-head{font-size:8px}.cctv-topline{font-size:8px}.cctv-grid{gap:6px}.cctv-timeline{padding:6px}.cctv-timeline .time-token{font-size:9px;padding:6px}.device-detail{padding:15px;gap:11px}.battery-pictogram{min-width:70px;font-size:14px}}
+@media(prefers-reduced-motion:reduce){.ambient-beam{animation:none!important}}
