@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#090f1b">
 <meta name="description" content="MOON MART: 심야 탈출 — 브라우저에서 즐기는 무료 싱글플레이 방탈출 게임">
-<title>MOON MART | 심야 탈출 — Precision Inspection v0.6</title>
+<title>MOON MART | 심야 탈출 — Photographic Environment Beta v0.7</title>
 <style>
 :root{color-scheme:dark;--bg:#090f1b;--card:#111e30;--surface:#16263b;--line:#30445b;--txt:#e9f1f5;--muted:#9aaec0;--mint:#7bf5d5;--amber:#ffcf76;--red:#ff899a;--blue:#9dbafa;--shadow:0 28px 70px #0008}
 *{box-sizing:border-box}html{min-width:320px}body{margin:0;background:radial-gradient(circle at 38% -5%,#1e3447 0,transparent 43%),var(--bg);color:var(--txt);font-family:Pretendard,"Apple SD Gothic Neo","Malgun Gothic",system-ui,sans-serif;line-height:1.5}
@@ -87,11 +87,12 @@ button,input{font:inherit}button{cursor:pointer}button:focus-visible,input:focus
 .item-study button{min-height:43px}
 @media(max-width:500px){.precision-viewport{height:193px}.precision-toolbar{gap:4px}.precision-toolbar button{min-width:37px;min-height:42px;padding:0 6px}.precision-level{min-width:41px}.dialog:has(.precision-view) .dialog-body{padding-left:14px;padding-right:14px}}
 @media(prefers-reduced-motion:reduce){.precision-viewport .evidence-art{transition:none}}
-</style></head>
+</style><link rel="stylesheet" href="v07-photo.css">
+</head>
 <body>
 <div id="app">
 <header class="topbar">
-  <div class="brand"><span class="mark" aria-hidden="true">☾</span><div><small>AFTER HOURS / EP.01 · v0.6</small><strong>MOON MART <span style="color:var(--mint)">심야 탈출</span></strong></div></div>
+  <div class="brand"><span class="mark" aria-hidden="true">☾</span><div><small>AFTER HOURS / EP.01 · v0.7</small><strong>MOON MART <span style="color:var(--mint)">심야 탈출</span></strong></div></div>
   <div class="status-wrap"><span class="pill" id="saveBadge"><i class="pulse"></i> AUTO SAVE</span><span class="pill clock" id="elapsed">00:00</span><button id="spotToggle" class="small-btn" type="button" aria-pressed="true">◎ 조사 지점</button><button id="soundBtn" class="small-btn" type="button" aria-pressed="false">♪ 소리 끔</button></div>
 </header>
 <div class="layout">
@@ -320,4 +321,5 @@ window.addEventListener('pagehide',save);document.addEventListener('visibilitych
 window.__moonMartTest={state:()=>structuredClone(S),act:inspect,move:entry,select:selectItem,reset:reset};
 })();
 </script>
+<script src="v07-photo.js"></script>
 </body></html>
