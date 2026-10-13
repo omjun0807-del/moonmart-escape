@@ -8,6 +8,8 @@ on:
       - 'theme-v4.css'
       - 'v09-world.js'
       - 'v09-world.css'
+      - 'v10-experience.js'
+      - 'v10-experience.css'
       - '.github/workflows/deploy.yml'
   workflow_dispatch:
 
@@ -81,6 +83,25 @@ jobs:
           for filename in ['art-v08/shop.svg','art-v08/storage.svg','art-v08/office.svg','v09-world.js','v09-world.css']:
               assert (Path('_site')/filename).stat().st_size > 100
           print('MOON MART v0.9 stateful world overlay validated and included')
+          PY
+          fi
+          # v1.0 RC: original illustrated close-ups and a save-aware case journal.
+          if [[ -f v10-experience.js && -f v10-experience.css && -f _site/v09-world.js ]]; then
+            cp v10-experience.js v10-experience.css _site/
+            node --check _site/v10-experience.js
+            python3 - <<'PY'
+          from pathlib import Path
+          p = Path('_site/index.html')
+          content = p.read_text(encoding='utf-8')
+          assert 'v09-world.js' in content, 'v0.9 environment not included'
+          assert '<div id="dialogBody"' not in content or 'id="dialogBody"' in content
+          assert 'id="dialogBody"' in content and 'id="missionPanel"' in content and '__moonMartTest' in content
+          content = content.replace('</head>', '<link rel="stylesheet" href="v10-experience.css?v=10"></head>', 1)
+          content = content.replace('</body>', '<script defer src="v10-experience.js?v=10"></script></body>', 1)
+          content = content.replace('Illustrated Interactive Rooms v0.8','Cinematic Inspection v1.0 RC')
+          p.write_text(content, encoding='utf-8')
+          assert content.count('v10-experience.js') == 1
+          print('MOON MART v1.0 RC: close-ups + story journal included')
           PY
           fi
           touch _site/.nojekyll
