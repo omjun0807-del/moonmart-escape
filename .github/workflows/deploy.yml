@@ -5,6 +5,8 @@ on:
     paths:
       - '*.zip'
       - 'index.html'
+      - 'v07-photo.js'
+      - 'v07-photo.css'
       - 'theme-v4.css'
       - '.github/workflows/deploy.yml'
   workflow_dispatch:
@@ -47,8 +49,11 @@ jobs:
             cp index.html theme-v4.css _site/
             echo "v0.4 interactive source override applied"
           fi
+          if [[ -f v07-photo.js && -f v07-photo.css ]]; then
+            cp v07-photo.js v07-photo.css _site/
+          fi
           touch _site/.nojekyll
-          echo "출시 후보: MOON MART v0.4"
+          echo "출시 후보: MOON MART v0.7 사진 베타"
           find _site -maxdepth 2 -type f
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v4
