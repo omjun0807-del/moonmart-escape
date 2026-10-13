@@ -91,7 +91,8 @@ try {
     await page.locator('#objectGrid [data-action="frontDoor"]').click();
     await page.waitForFunction(()=>window.__moonMartTest.state().flags.escaped);
     assert.equal(await page.locator('#v09StateReadout .v09-chip.done').filter({hasText:'셔터'}).count(),1,'Shutter stays unlocked');
-    await page.locator('#v10JournalButton').click();
+    await page.locator('#v10EndingJournal').waitFor({state:'visible',timeout:6000});
+    await page.locator('#v10EndingJournal').click();
     assert.match(await page.locator('#v10JournalOverlay').innerText(),/EP.01 사건 종결/,'Epilogue entry unlocked');
     await page.locator('#v10JournalClose').click();
     assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=window.innerWidth+3),'No horizontal overflow');
