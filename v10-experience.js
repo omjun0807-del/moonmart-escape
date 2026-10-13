@@ -51,6 +51,19 @@ var mappings=[
 function draw(){
  const heading=title.textContent||'';
  if(!heading||heading==='00:13, 셔터가 내려왔다')return;
+ if(heading==='정문이 열렸습니다!'){
+  if(!body.querySelector('#v10EndingJournal')){
+   const actions=body.querySelector('.actions');
+   if(actions){
+    const button=document.createElement('button');
+    button.type='button';button.className='btn-secondary';button.id='v10EndingJournal';
+    button.textContent='사건 일지 · 마지막 기록 확인';
+    button.addEventListener('click',openJournal);
+    actions.prepend(button);
+   }
+  }
+  return;
+ }
  const entry=mappings.find(function(m){return m[0].test(heading)});
  if(!entry)return;
  const f=api.state().flags||{};
