@@ -40,10 +40,47 @@ try {
     await page.reload({waitUntil:'networkidle'});
     await page.waitForFunction(()=>window.__moonMartTest?.state()?.flags?.power);
     assert.equal(await page.locator('#v09StateReadout .v09-chip.done').filter({hasText:'전력'}).count(),1,'Saved state reflected after reload');
+
+    // Continue through the full escape after restoring the old save.
+    await page.evaluate(()=>window.__moonMartTest.move('shop'));
+    await page.locator('#objectGrid [data-action="shelf"]').click();
+    await page.locator('#dialogClose').click();
+    await page.evaluate(()=>window.__moonMartTest.move('storage'));
+    await page.locator('#inventory [data-item]').filter({hasText:'건전지'}).click();
+    await page.locator('#objectGrid [data-action="scanner"]').click();
+    await page.locator('#dialogClose').click();
+    await page.locator('#objectGrid [data-action="scanner"]').click();
+    await page.waitForFunction(()=>window.__moonMartTest.state().flags.scanned);
+    await page.locator('#dialogClose').click();
+    await page.locator('#objectGrid [data-action="toolbox"]').click();
+    await page.locator('[data-puzzle="toolbox"] input').fill('385');
+    await page.locator('[data-puzzle="toolbox"] button[type="submit"]').click();
+    await page.waitForFunction(()=>window.__moonMartTest.state().flags.case);
+    await page.locator('#dialogClose').click();
+    await page.locator('#inventory [data-item]').filter({hasText:'관리실 카드'}).click();
+    await page.locator('#objectGrid [data-action="officeDoor"]').click();
+    await page.waitForFunction(()=>window.__moonMartTest.state().scene==='office');
+
+    await page.locator('#objectGrid [data-action="monitor"]').click();
+    for(const id of ['B','D','A','C'])await page.locator('[data-frame="'+id+'"]').click();
+    await page.locator('#verifyCctv').click();
+    await page.waitForFunction(()=>window.__moonMartTest.state().flags.cctv);
+    await page.locator('#dialogClose').click();
+    await page.locator('#objectGrid [data-action="terminal"]').click();
+    for(const [i,taps] of [[0,1],[1,2],[2,3]]){
+      for(let n=0;n<taps;n++)await page.locator('[data-symbol="'+i+'"]').click();
+    }
+    await page.locator('#verifySymbols').click();
+    await page.waitForFunction(()=>window.__moonMartTest.state().flags.terminal);
+    await page.locator('#dialogClose').click();
+    await page.evaluate(()=>window.__moonMartTest.move('shop'));
+    await page.locator('#objectGrid [data-action="frontDoor"]').click();
+    await page.waitForFunction(()=>window.__moonMartTest.state().flags.escaped);
+    assert.equal(await page.locator('#v09StateReadout .v09-chip.done').filter({hasText:'셔터'}).count(),1,'Shutter stays unlocked');
     assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=window.innerWidth+3),'No horizontal overflow');
     assert.deepEqual(errors,[],'No JS errors');
     await page.screenshot({path:'v09-qa-'+width+'.png',fullPage:true});
-    console.log('PASS: '+width+'px — drawer, door, breaker, save, overlay, no JS errors');
+    console.log('PASS: '+width+'px — full escape path, stateful effects, save, no JS errors');
     await page.close();
   }
 } catch(e) {failure=e;console.error('QA FAILED',e);process.exitCode=1}
