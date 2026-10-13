@@ -5,8 +5,6 @@ on:
     paths:
       - '*.zip'
       - 'index.html'
-      - 'v07-photo.js'
-      - 'v07-photo.css'
       - 'theme-v4.css'
       - '.github/workflows/deploy.yml'
   workflow_dispatch:
@@ -28,33 +26,44 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - uses: actions/checkout@v4
-      - name: Unpack verified game bundle
+      - name: Build latest version, with safe fallback
         shell: bash
         run: |
           set -euo pipefail
-          zip_file="$(find . -maxdepth 1 -type f -name '*.zip' -print -quit)"
-          if [[ -z "$zip_file" ]]; then
-            echo "::error::게임 ZIP이 없습니다. 저장소 최상위에 v0.3 ZIP을 업로드하세요."
+          mkdir -p _old _site
+          base_zip="$(find . -maxdepth 1 -type f -name '*v0.3*.zip' -print -quit)"
+          if [[ -z "$base_zip" ]]; then
+            echo "::error::이전 버전 기본 리소스 ZIP이 없습니다."
             exit 1
           fi
-          mkdir -p _extract _site
-          unzip -q "$zip_file" -d _extract
-          src="_extract/MOON_MART_v0.3"
-          for file in index.html theme-v2.css theme-v3.css assets/scene-shop.webp; do
-            test -s "$src/$file" || { echo "::error::ZIP에 필요한 파일이 없습니다: $file"; exit 1; }
+          unzip -q "$base_zip" -d _old
+          base="_old/MOON_MART_v0.3"
+          for file in theme-v2.css theme-v3.css assets/scene-shop.webp; do
+            test -s "$base/$file" || { echo "::error::v0.3 기본 자료 누락: $file"; exit 1; }
           done
-          cp "$src/index.html" "$src/theme-v2.css" "$src/theme-v3.css" _site/
-          cp -R "$src/assets" _site/assets
-          if [[ -f index.html && -f theme-v4.css ]]; then
-            cp index.html theme-v4.css _site/
-            echo "v0.4 interactive source override applied"
-          fi
-          if [[ -f v07-photo.js && -f v07-photo.css ]]; then
-            cp v07-photo.js v07-photo.css _site/
+          next_zip="$(find . -maxdepth 1 -type f -name '*v0.8*.zip' -print -quit)"
+          if [[ -n "$next_zip" ]]; then
+            echo "MOON MART v0.8 게임 전용 일러스트 배포"
+            unzip -q "$next_zip" -d _site
+            for file in index.html art-v08/shop.svg art-v08/storage.svg art-v08/office.svg; do
+              test -s "_site/$file" || { echo "::error::v0.8 ZIP 내부 파일 누락: $file"; exit 1; }
+            done
+            cp "$base/theme-v2.css" "$base/theme-v3.css" _site/
+            cp theme-v4.css _site/
+          else
+            echo "v0.8 ZIP 미등록 — 기존 v0.7 게임을 안전하게 유지합니다."
+            cp "$base/index.html" "$base/theme-v2.css" "$base/theme-v3.css" _site/
+            cp -R "$base/assets" _site/assets
+            if [[ -f index.html && -f theme-v4.css ]]; then
+              cp index.html theme-v4.css _site/
+            fi
+            if [[ -f v07-photo.js && -f v07-photo.css ]]; then
+              cp v07-photo.js v07-photo.css _site/
+            fi
           fi
           touch _site/.nojekyll
-          echo "출시 후보: MOON MART v0.7 사진 베타"
-          find _site -maxdepth 2 -type f
+          echo "배포 확인:"
+          find _site -maxdepth 2 -type f | sort
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v4
         with:
