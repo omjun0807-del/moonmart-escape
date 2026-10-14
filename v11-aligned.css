@@ -1,0 +1,43 @@
+/* MOON MART v1.1 — anchored object effects, safe on mobile pan/zoom */
+.scene.designed-edition #v09Environment{display:none!important}
+.v11-objects{position:absolute;inset:0;z-index:3;pointer-events:none;overflow:hidden;isolation:isolate}
+.v11-object{position:absolute;transform:translate(-50%,-50%);pointer-events:none;filter:drop-shadow(0 8px 14px #000a);opacity:1}
+.v11-object>svg{width:100%;height:100%;display:block;overflow:visible}
+.v11-object--register{width:17%;height:21%}
+.v11-object--storageDoor,.v11-object--officeDoor{width:16%;height:40%}
+.v11-object--frontDoor{width:19%;height:43%}
+.v11-object--breaker{width:15%;height:24%}
+.v11-object--monitor{width:19%;height:24%}
+.v11-object--terminal{width:13%;height:23%}
+.v11-object--scanner{width:13%;height:19%}
+.v11-object--toolbox{width:15%;height:17%}
+.v11-object svg .v11-screen-glow{filter:drop-shadow(0 0 12px #82ffce)}
+.v11-object svg .v11-metal{filter:drop-shadow(0 5px 5px #000c)}
+.v11-object svg .v11-open-door{transform-origin:8% 48%;transform:perspective(400px) rotateY(-53deg)}
+.v11-object svg .v11-shutter{transform:translateY(-102%)}
+.v11-object.is-new svg .v11-open-door{animation:v11swing .85s ease-out both}
+.v11-object.is-new svg .v11-shutter{animation:v11lift 1.2s cubic-bezier(.18,.77,.25,1) both}
+.v11-object.is-new svg .v11-metal-drawer{animation:v11pull .7s cubic-bezier(.2,.75,.4,1) both}
+.v11-object.is-new svg .v11-power-indicator{animation:v11flicker 1.15s ease-in-out both}
+.v11-object svg .v11-smalltext{font-size:9px;letter-spacing:1px;font-family:ui-monospace,monospace;fill:#e9efec;paint-order:stroke;stroke:#091621;stroke-width:2px;font-weight:700}
+.v11-lamp{position:absolute;width:18%;height:30%;border-radius:50%;background:radial-gradient(ellipse,#fff1ae77 0,#d3fda933 26%,#78fff011 55%,transparent 71%);mix-blend-mode:screen;pointer-events:none;animation:v11glow 3.5s ease-in-out infinite alternate}
+.v11-lamp.l1{left:12%;top:-9%}.v11-lamp.l2{left:62%;top:-6%}
+.v11-focusring{position:absolute;width:12%;height:20%;border:2px solid #e6f9ce;border-radius:50%;transform:translate(-50%,-50%);pointer-events:none;opacity:0;box-shadow:0 0 0 7px #eaffc51c,inset 0 0 22px #b9fff133;z-index:4}
+.v11-focusring.active{animation:v11focus .75s ease-out both}
+.v11-action-note{position:absolute;top:12px;right:14px;max-width:50%;padding:8px 11px;border:1px solid #a1f4dbb0;background:#081822e8;color:#e8ffef;border-radius:9px;font-size:11px;letter-spacing:.02em;font-weight:800;z-index:12;box-shadow:0 5px 14px #000b;pointer-events:none}
+.v11-action-note[hidden]{display:none!important}
+.v11-progress-map{display:flex;align-items:center;flex-wrap:wrap;gap:5px;margin:12px 0 3px}
+.v11-progress-map .v11-level{display:flex;gap:6px;align-items:center;border:1px solid #3b5660;background:#12232d;color:#afc3c9;border-radius:7px;padding:5px 9px;font-size:10px;font-weight:750}
+.v11-progress-map .v11-level.success{color:#b7f9dc;border-color:#54a48b;background:#18352f}
+.v11-progress-map .v11-level:before{content:'◇';color:#637a87}.v11-progress-map .v11-level.success:before{content:'◆';color:#99edcb}
+.v11-objects[hidden]{display:none!important}
+.scene.designed-edition .hotspots .hotspot{touch-action:manipulation;min-width:44px;min-height:44px}
+.scene.designed-edition .hotspots .hotspot:focus-visible{outline:3px solid #f3df9f;outline-offset:5px}
+@keyframes v11swing{from{transform:perspective(400px) rotateY(0)}to{transform:perspective(400px) rotateY(-53deg)}}
+@keyframes v11lift{from{transform:translateY(0)}to{transform:translateY(-102%)}}
+@keyframes v11pull{from{transform:translateY(-20px);opacity:.3}to{transform:translateY(0);opacity:1}}
+@keyframes v11flicker{0%,15%,35%{opacity:.1}8%,30%,60%,100%{opacity:1}}
+@keyframes v11glow{from{opacity:.65}to{opacity:1}}
+@keyframes v11focus{0%{opacity:0;transform:translate(-50%,-50%) scale(.4)}30%{opacity:1}100%{opacity:0;transform:translate(-50%,-50%) scale(1.3)}}
+@media(max-width:550px){.v11-action-note{font-size:10px;top:5px;right:6px;max-width:55%;padding:5px 7px}.v11-progress-map{gap:4px}.v11-progress-map .v11-level{font-size:9px;padding:4px 6px}}
+@media(prefers-reduced-motion:reduce){.v11-objects *, .v11-object *, .v11-focusring{animation:none!important;transition:none!important}.v11-focusring{display:none!important}}
