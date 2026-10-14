@@ -27,6 +27,7 @@ try {
     await page.locator('#v12ExitFocus').click();
     assert.equal(await page.evaluate(()=>document.body.classList.contains('v12-focus-mode')),false,'Focus mode exited without trapping the user');
     assert.equal(await page.locator('#v12CineButton').isVisible(),false,'Unfinished background image mode stays hidden');
+    assert.equal(await page.locator('meta[name="mm-v12-art"]').count(),0,'Unpublished scenes are not advertised');
     await page.locator('#v12FocusButton').click();
     await page.reload({waitUntil:'networkidle'});
     assert.equal(await page.evaluate(()=>document.body.classList.contains('v12-focus-mode')),true,'Focus mode preference persists after reload');
