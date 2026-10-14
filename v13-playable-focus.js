@@ -200,7 +200,11 @@ new MutationObserver(schedule).observe(document.body,{attributes:true,attributeF
 document.addEventListener('click',schedule);
 window.addEventListener('pageshow',schedule);
 const brand=document.querySelector('.brand small');
-if(brand)brand.textContent='AFTER HOURS / EP.01 · v1.3';
-document.title='MOON MART | 심야 탈출 — Playable Immersion v1.3';
+if(brand)brand.textContent='AFTER HOURS / EP.01 · v1.4';
+document.title='MOON MART | 심야 탈출 — Verified Saves v1.4';
+if(window.__moonMartRestoreApplied){
+ const restored=document.getElementById('v13SaveStatus');
+ if(restored){restored.textContent='이전 백업의 진행 기록을 정상 복원했습니다.';restored.className='ok'}
+}
 schedule();
 })();
