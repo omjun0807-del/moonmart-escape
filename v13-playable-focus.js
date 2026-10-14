@@ -9,6 +9,7 @@ const api=window.__moonMartTest,aside=document.querySelector('aside.right'),
 if(!api||!aside||!scene||!inventory||!hintPanel||!byId('v12FocusButton'))return;
 const SAVE_KEY='moon_mart_escape_ep01_v1';
 const PREVIOUS_KEY='moon_mart_escape_ep01_v1_before_import';
+const PENDING_KEY='moonmart_pending_restore_ep01_v14';
 const flags=[
  'receipt','memo','register','storage','power','batteryInstalled','scanner','scanned','case','office','cctv','terminal','escaped'
 ];
@@ -137,7 +138,9 @@ fileInput.addEventListener('change',async()=>{
    const clean=validate(json);
    const prior=localStorage.getItem(SAVE_KEY);
    if(prior)localStorage.setItem(PREVIOUS_KEY,prior);
-   localStorage.setItem(SAVE_KEY,JSON.stringify(clean));
+   // The original game saves its old in-memory state on pagehide.
+   // v14 restores this validated snapshot BEFORE the core script runs again.
+   sessionStorage.setItem(PENDING_KEY,JSON.stringify(clean));
    saveNotice('진행 기록을 불러왔습니다. 게임을 다시 여는 중입니다.','ok');
    location.reload();
  }catch(e){saveNotice('불러오기 실패: '+(e&&e.message?e.message:'백업 파일을 확인해 주세요.'),'error')}
@@ -147,7 +150,7 @@ byId('v13UndoImport').addEventListener('click',()=>{
  if(!previous)return;
  try{
   const clean=validate(JSON.parse(previous));
-  localStorage.setItem(SAVE_KEY,JSON.stringify(clean));
+  sessionStorage.setItem(PENDING_KEY,JSON.stringify(clean));
   localStorage.removeItem(PREVIOUS_KEY);
   saveNotice('이전 기록을 복구했습니다. 화면을 다시 엽니다.','ok');
   location.reload();
