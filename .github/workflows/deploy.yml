@@ -140,6 +140,8 @@ jobs:
           html=p.read_text(encoding='utf-8')
           for anchor in ['v11-aligned.js','id="sceneArt"','id="soundBtn"','id="scene"']:
               assert anchor in html, f'Missing v1.2 integration point: {anchor}'
+          if all((Path('_site')/'art-v12'/f'{zone}.webp').stat().st_size > 20000 for zone in ['shop','storage','office']) if (Path('_site')/'art-v12').exists() else False:
+              html=html.replace('</head>','<meta name="mm-v12-art" content="ready"></head>',1)
           html=html.replace('</head>','<link rel="stylesheet" href="v12-immersive.css?v=12"></head>',1)
           html=html.replace('</body>','<script defer src="v12-immersive.js?v=12"></script></body>',1)
           assert html.count('v12-immersive.js')==1
