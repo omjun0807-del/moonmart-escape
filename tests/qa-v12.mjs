@@ -20,6 +20,7 @@ try {
 
     await page.locator('#v10JournalButton').waitFor({state:'attached',timeout:8000});
     await page.locator('#v11World').waitFor({state:'attached',timeout:8000});
+    await page.locator('#startGame').click();
     await page.locator('#v12FocusButton').waitFor({state:'visible',timeout:8000});
     await page.locator('#v12FocusButton').click();
     assert.equal(await page.evaluate(()=>document.body.classList.contains('v12-focus-mode')),true,'Focus mode is enabled');
@@ -44,7 +45,6 @@ try {
       },action);
       assert.ok(ok,'Prop '+action+' anchored to live hotspot and does not steal clicks');
     };
-    await page.locator('#startGame').click();
     await page.locator('#v10JournalButton').click();
     await page.locator('#v10JournalOverlay .v10-entry').first().waitFor({state:'visible'});
     assert.equal(await page.locator('#v10JournalOverlay .v10-entry').count(),8,'Eight progressive case journal entries');
