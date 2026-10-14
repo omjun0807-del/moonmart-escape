@@ -195,5 +195,8 @@ new MutationObserver(schedule).observe(scene,{attributes:true,attributeFilter:['
 new MutationObserver(schedule).observe(document.body,{attributes:true,attributeFilter:['class']});
 document.addEventListener('click',schedule);
 window.addEventListener('pageshow',schedule);
+const brand=document.querySelector('.brand small');
+if(brand)brand.textContent='AFTER HOURS / EP.01 · v1.3';
+document.title='MOON MART | 심야 탈출 — Playable Immersion v1.3';
 schedule();
 })();
