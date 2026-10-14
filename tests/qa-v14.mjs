@@ -1,7 +1,9 @@
 import { chromium, webkit } from 'playwright';
 import assert from 'node:assert/strict';
 
-const browser = await chromium.launch({headless:true,args:['--no-sandbox']});
+const engine=process.env.TEST_ENGINE==='webkit'?webkit:chromium;
+const options=process.env.TEST_ENGINE==='webkit'?{headless:true}:{headless:true,args:['--no-sandbox']};
+const browser=await engine.launch(options);
 let failure = null;
 try {
   for(const width of [1440,390,320]){
