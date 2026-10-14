@@ -1,0 +1,38 @@
+name: v1.4 Restore Integrity QA
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'tests/qa-v14.mjs'
+      - '.github/workflows/qa-v14.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  cross-browser:
+    strategy:
+      fail-fast: false
+      matrix:
+        engine: [chromium, webkit]
+    runs-on: ubuntu-latest
+    timeout-minutes: 18
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install browser dependencies
+        run: |
+          npm install --no-save --no-audit --no-fund playwright@1.57.0
+          npx playwright install --with-deps ${{ matrix.engine }}
+      - name: Test live gameplay and real backup restore
+        env:
+          TEST_ENGINE: ${{ matrix.engine }}
+        run: node tests/qa-v14.mjs
+      - name: Preserve QA screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: moonmart-v14-${{ matrix.engine }}-screenshots
+          path: v14-qa-*.png
+          if-no-files-found: ignore
