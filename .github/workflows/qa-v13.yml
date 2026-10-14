@@ -1,0 +1,32 @@
+name: v1.3 Playable Immersion QA
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'tests/qa-v13.mjs'
+      - '.github/workflows/qa-v13.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  gameplay:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install Playwright Chromium
+        run: |
+          npm install --no-save --no-audit --no-fund playwright@1.57.0
+          npx playwright install --with-deps chromium
+      - name: Test v1.3 live full escape and portable saves
+        run: node tests/qa-v13.mjs
+      - name: Save QA screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: moonmart-v13-qa-screenshots
+          path: v13-qa-*.png
+          if-no-files-found: ignore
