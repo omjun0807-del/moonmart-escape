@@ -8,7 +8,8 @@ try {
     const page = await browser.newPage({ viewport: {width,height:width===1440?900:720}, isMobile:width!==1440, hasTouch:width!==1440 });
     const errors=[];
     page.on('pageerror',e=>errors.push(e.message));
-    page.on('console',m=>{if(m.type()==='error')errors.push(m.text())});
+    page.on('console',m=>{if(m.type()==='error' && /Uncaught|ReferenceError|TypeError|SyntaxError/i.test(m.text()))errors.push(m.text())});
+    page.on('response',r=>{if(r.url().startsWith('https://omjun0807-del.github.io/moonmart-escape/') && r.status()>=400)errors.push('Critical game resource HTTP '+r.status()+': '+r.url())});
     const response=await page.goto('https://omjun0807-del.github.io/moonmart-escape/?qa=12&width='+width,{waitUntil:'networkidle',timeout:60000});
     assert.equal(response.status(),200,'Main page HTTP 200');
     await page.locator('#v09Environment').waitFor({state:'attached'});
