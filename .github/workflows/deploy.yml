@@ -16,6 +16,7 @@ on:
       - 'v12-immersive.css'
       - 'v13-playable-focus.js'
       - 'v13-playable-focus.css'
+      - 'v14-restore-preload.js'
       - 'art-v12/**'
       - '.github/workflows/deploy.yml'
   workflow_dispatch:
@@ -168,6 +169,22 @@ jobs:
           assert html.count('v13-playable-focus.js')==1
           p.write_text(html, encoding='utf-8')
           print('v1.3 full-focus controls and backup manager deployed')
+          PY
+          # v1.4: load pending validated saves before the v0.8 game initializes.
+          test -s v14-restore-preload.js
+          cp v14-restore-preload.js _site/
+          node --check _site/v14-restore-preload.js
+          python3 - <<'PY'
+          from pathlib import Path
+          p=Path('_site/index.html')
+          html=p.read_text(encoding='utf-8')
+          original="<script>\n(()=>{'use strict';"
+          assert original in html, 'Original game bootstrap not found'
+          html=html.replace(original, '<script src="v14-restore-preload.js?v=14"></script>\n'+original, 1)
+          assert html.index('v14-restore-preload.js') < html.index("const STORAGE='moon_mart_escape_ep01_v1'")
+          assert html.count('v14-restore-preload.js')==1
+          p.write_text(html,encoding='utf-8')
+          print('v1.4 restore staging is ahead of the legacy game bootstrap')
           PY
           touch _site/.nojekyll
           echo "배포 확인:"
