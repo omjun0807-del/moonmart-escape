@@ -17,6 +17,9 @@ on:
       - 'v13-playable-focus.js'
       - 'v13-playable-focus.css'
       - 'v14-restore-preload.js'
+      - 'v15-polish.js'
+      - 'v15-polish.css'
+      - 'scripts/build-v15.py'
       - 'art-v12/**'
       - '.github/workflows/deploy.yml'
   workflow_dispatch:
@@ -186,6 +189,16 @@ jobs:
           p.write_text(html,encoding='utf-8')
           print('v1.4 restore staging is ahead of the legacy game bootstrap')
           PY
+          # v1.5: consolidate five legacy enhancement layers into two ordered assets.
+          # The v1.4 restore script must remain ahead of the original core bootstrap.
+          test -s scripts/build-v15.py
+          cp v15-polish.js v15-polish.css _site/
+          python3 scripts/build-v15.py
+          node --check _site/v15-runtime.js
+          node --check _site/v14-restore-preload.js
+          for file in _site/index.html _site/v15-runtime.css _site/v15-runtime.js; do
+            test -s "$file" || { echo "::error::v1.5 asset missing: $file"; exit 1; }
+          done
           touch _site/.nojekyll
           echo "배포 확인:"
           find _site -maxdepth 2 -type f | sort
