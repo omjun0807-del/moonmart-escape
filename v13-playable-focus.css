@@ -1,0 +1,45 @@
+/* MOON MART v1.3 — playable cinematic mode & portable save management */
+:root{--v13-ink:#08141d;--v13-glow:#a7efd7;--v13-stroke:#456775}
+#v13QuickDock,#v13DrawerBackdrop,#v13DrawerTop,#v13SaveOverlay{display:none}
+body.v12-focus-mode #v13QuickDock{display:flex;align-items:stretch;gap:5px;justify-content:center;position:fixed;bottom:max(8px,env(safe-area-inset-bottom));left:50%;transform:translateX(-50%);z-index:62;border:1px solid #7ca69999;background:#0a1625ec;backdrop-filter:blur(15px);box-shadow:0 8px 34px #000e,0 0 0 2px #102c31b6;border-radius:16px;padding:6px;max-width:min(96vw,600px);width:max-content}
+#v13QuickDock[hidden]{display:none!important}
+.v13-dock-btn{min-height:48px;min-width:68px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;background:#173044;color:#d8ecf2;border:1px solid #345567;border-radius:10px;font-size:11px;font-weight:750;padding:5px 11px;touch-action:manipulation;cursor:pointer;white-space:nowrap}
+.v13-dock-btn .v13-symbol{font-size:17px;color:#e7d4a1;line-height:1.2}
+.v13-dock-btn:hover,.v13-dock-btn:focus-visible{background:#245268;border-color:#a0e4d9}
+.v13-dock-btn[aria-expanded=true]{background:#316254;color:#fff;border-color:#b7ffe0}
+.v13-bag-dot{display:inline-flex;justify-content:center;align-items:center;min-width:16px;height:16px;border-radius:9px;background:#d8bd89;color:#10232f;font-size:9px;font-weight:900;vertical-align:middle}
+body.v12-focus-mode.v13-drawer-open #v13DrawerBackdrop{display:block;position:fixed;inset:0;background:#02090dbb;z-index:62;backdrop-filter:blur(3px)}
+body.v12-focus-mode.v13-drawer-open .right{display:flex!important;flex-direction:column;position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);width:min(480px,calc(100vw - 24px));height:auto;max-height:min(84dvh,720px);overflow-y:auto;overscroll-behavior:contain;border:1px solid #8ac4b1a1;background:linear-gradient(150deg,#172739,#0c1827);z-index:64;border-radius:17px;box-shadow:0 24px 75px #000e;padding:12px;gap:9px}
+body.v12-focus-mode.v13-drawer-open #v13DrawerTop{display:flex;align-items:center;justify-content:space-between;gap:12px;border-bottom:1px solid #567368;padding:4px 4px 12px;color:#d6fbe8}
+#v13DrawerTop strong{font-size:15px;letter-spacing:.02em}
+#v13DrawerClose{border:1px solid #50727d;background:#1c3447;color:#fff;border-radius:9px;min-width:44px;min-height:44px;font-size:22px;cursor:pointer}
+body.v12-focus-mode.v13-drawer-open .right>section.panel{display:none}
+body.v12-focus-mode.v13-drawer-open[data-v13-panel="explore"] #explorePanel,
+body.v12-focus-mode.v13-drawer-open[data-v13-panel="inventory"] #inventoryPanel,
+body.v12-focus-mode.v13-drawer-open[data-v13-panel="hint"] #hintPanel{display:block!important}
+body.v12-focus-mode.v13-drawer-open .right>section.panel{border:0;background:transparent;box-shadow:none;margin:0;padding:6px 3px 3px}
+body.v12-focus-mode.v13-drawer-open #explorePanel .object-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+body.v12-focus-mode.v13-drawer-open #explorePanel button{min-height:48px}
+body.v12-focus-mode.v13-drawer-open #inventoryPanel .inventory{max-height:48dvh;overflow-y:auto}
+body.v12-focus-mode.v13-drawer-open #hintPanel .assist{min-height:48px}
+#v13SaveOpen{margin-top:12px;width:100%;border:1px solid #a3c7a17f;background:#1a313d;color:#d9f5e9;border-radius:9px;padding:12px;min-height:44px;font-size:12px;font-weight:850;cursor:pointer}
+#v13SaveOpen:focus-visible{outline:3px solid #d2fff1;outline-offset:3px}
+#v13SaveOverlay{position:fixed;inset:0;z-index:120;background:#020810dc;backdrop-filter:blur(9px);align-items:center;justify-content:center;padding:12px}
+#v13SaveOverlay:not([hidden]){display:flex}
+#v13SaveDialog{width:min(530px,100%);max-height:min(90dvh,780px);overflow:auto;border:1px solid #8fb0aa;border-radius:18px;background:linear-gradient(155deg,#192e3b,#0a1927);box-shadow:0 25px 95px #000e;padding:22px;color:#e7f0ef}
+#v13SaveDialog h2{font-size:23px;margin:5px 0 7px}
+#v13SaveDialog p{font-size:12px;line-height:1.7;color:#bdd0cf}
+#v13SaveDialog .v13-save-line{display:flex;gap:8px;flex-wrap:wrap;margin-top:13px}
+.v13-action{border:1px solid #9bb8af;background:#234b53;color:#edfff8;border-radius:10px;padding:12px 15px;min-height:46px;cursor:pointer;font-size:13px;font-weight:850;flex:1}
+.v13-action.primary{color:#09242a;background:#b4f8dc}
+.v13-action:focus-visible{outline:3px solid #ffe0a2;outline-offset:3px}
+#v13SaveStatus{border-radius:9px;padding:10px;margin:14px 0 3px;background:#142b37;border:1px solid #56727b;color:#d3e8e9;font-size:12px}
+#v13SaveStatus.error{border-color:#ee93a5;background:#421d27;color:#ffe5e9}
+#v13SaveStatus.ok{border-color:#70c5ab;background:#163a32;color:#d4ffee}
+#v13SaveInput{display:none}
+.v13-selected-mark{position:fixed;right:10px;bottom:max(76px,env(safe-area-inset-bottom) + 76px);z-index:59;padding:8px 13px;background:#254c46f0;border:1px solid #a9e6c7;border-radius:9px;color:#dcfff1;font-size:12px;font-weight:800;pointer-events:none;max-width:min(80vw,300px);box-shadow:0 7px 25px #0008}
+.v13-selected-mark[hidden]{display:none}
+body:not(.v12-focus-mode) .v13-selected-mark{display:none}
+body:not(.v12-focus-mode) #v13QuickDock{display:none}
+@media(max-width:530px){#v13QuickDock{width:calc(100vw - 18px)!important;max-width:460px!important;gap:4px!important;padding:5px!important}#v13QuickDock .v13-dock-btn{min-width:0;flex:1;padding:5px 2px;font-size:10px}#v13QuickDock .v13-symbol{font-size:16px}#v13SaveDialog{padding:15px}body.v12-focus-mode.v13-drawer-open .right{max-height:80dvh}body.v12-focus-mode .scene{min-height:330px}}
+@media(prefers-reduced-motion:reduce){#v13QuickDock,#v13SaveOverlay{transition:none!important}}
