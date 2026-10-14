@@ -169,10 +169,11 @@ dock.addEventListener('click',e=>{
 aside.addEventListener('click',e=>{
  if(!document.body.classList.contains('v13-drawer-open'))return;
  if(e.target.closest('#inventory [data-item],#objectGrid [data-action]')){
-  // Allow the existing handler to activate before collapsing the floating sidebar.
-  queueMicrotask(()=>closeDrawer(false));
+  // Capture is essential: original gameplay synchronously re-renders and replaces
+  // the clicked inventory node before a bubbling listener on the sidebar can run.
+  setTimeout(()=>closeDrawer(false),0);
  }
-});
+},true);
 document.addEventListener('keydown',e=>{
  if(e.key!=='Escape')return;
  if(!saveCover.hidden){e.preventDefault();e.stopImmediatePropagation();closeSave();return}
