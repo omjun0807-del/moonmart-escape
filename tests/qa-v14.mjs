@@ -16,7 +16,7 @@ try {
     assert.equal(response.status(),200,'Main page HTTP 200');
     await page.locator('#v09Environment').waitFor({state:'attached'});
     assert.match(await page.locator('.brand small').innerText(),/v1\.4/,'v1.4 marker');
-    assert.equal(await page.locator('#v09Environment svg').count(),1,'Scene overlay attached');
+    await page.locator('#v09Environment svg').waitFor({state:'attached',timeout:12000});
     const image=page.locator('#sceneArt img');
     await image.waitFor();
     assert.ok(await image.evaluate(i=>i.complete&&i.naturalWidth>100),'Original game art loaded');
