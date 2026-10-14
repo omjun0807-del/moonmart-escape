@@ -1,0 +1,34 @@
+/* v1.2: immersive scene presentation and optional independent location concept art */
+.v12-controls{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.v12-cine-btn{border:1px solid #c2cdbb;background:linear-gradient(135deg,#66543b,#202b3a);border-radius:8px;color:#ffedc6;padding:7px 11px;min-height:38px;font-size:12px;font-weight:900;cursor:pointer;touch-action:manipulation}
+.v12-cine-btn[aria-pressed=true]{color:#142923;background:#a4f5d9;border-color:#a4f5d9}
+.v12-cine-btn[hidden]{display:none}
+.v12-cine-credit{color:#b6d1cb;font-size:10px;letter-spacing:.03em}
+#v12FocusButton{margin-left:3px;background:linear-gradient(140deg,#1c4b52,#132b3b);border-color:#659898}
+#v12ExitFocus{display:none;position:absolute;right:11px;bottom:12px;z-index:18;min-height:44px;padding:10px 15px;border:1px solid #95d6c6;border-radius:11px;background:#0a222bdd;color:#eafff5;font-size:12px;font-weight:900;box-shadow:0 5px 20px #000b}
+body.v12-focus-mode #v12ExitFocus{display:block}
+body.v12-focus-mode #app{max-width:100%;padding:10px clamp(8px,1.2vw,18px) 30px}
+body.v12-focus-mode .layout{grid-template-columns:minmax(0,1fr)}
+body.v12-focus-mode .right{display:none}
+body.v12-focus-mode .topbar{padding:3px 0 9px}
+body.v12-focus-mode .scene{aspect-ratio:16/9;max-height:min(85vh,930px);width:100%}
+body.v12-focus-mode .world{padding:9px}
+body.v12-focus-mode .hotspot{min-height:44px;min-width:44px}
+body.v12-focus-mode .scene-bottom{padding-top:9px}
+body.v12-focus-mode .scene-instruction{bottom:6%}
+body.v12-focus-mode .mobile-dock{display:flex}
+body.v12-focus-mode #v12FocusButton{background:#816342;color:#fff3de;border-color:#ffe1a0}
+.v12-cinematic #sceneArt>img{width:100%;height:100%;object-fit:cover;object-position:center center;filter:contrast(1.08) saturate(.91) brightness(.76)!important}
+.scene.v12-cinematic.powered #sceneArt>img{filter:contrast(1.06) saturate(1.04) brightness(.97)!important}
+.scene.v12-cinematic #v11World,.scene.v12-cinematic #v09Environment{display:none!important}
+.scene.v12-cinematic .hotspot{background:#07141ccc;box-shadow:0 0 0 3px #86f7cb25,0 0 18px #000a;border-color:#b6e8cc;backdrop-filter:blur(5px)}
+.scene.v12-cinematic .hotspot.important{border-color:#ffe09a;box-shadow:0 0 0 6px #ffe0a51d,0 0 20px #0009}
+.scene.v12-cinematic:after{background:radial-gradient(ellipse at 52% 46%,transparent 20%,#0006 94%)}
+.scene.v12-loading #sceneArt>img{opacity:.35;filter:grayscale(.3)}
+.v12-art-overlay{position:absolute;inset:0;pointer-events:none;z-index:2;box-shadow:inset 0 0 75px 25px #0009;opacity:.45}
+.scene.v12-cinematic .v12-art-overlay{opacity:.65}
+.v12-photo-label{position:absolute;left:10px;top:14px;z-index:3;padding:5px 8px;font-size:9px;letter-spacing:.13em;border:1px solid #cad7c447;border-radius:4px;color:#c6e8dd;background:#08151bc9;pointer-events:none}
+.v12-transition{animation:v12switch .47s ease both}
+@keyframes v12switch{from{opacity:.43;filter:brightness(.45)}to{opacity:1;filter:none}}
+@media(max-width:560px){#v12FocusButton{padding:8px 10px;font-size:11px}.v12-controls{width:100%;gap:6px}.v12-controls button{flex:1}.v12-cine-credit{width:100%;line-height:1.3}body.v12-focus-mode .scene{aspect-ratio:1200/720}body.v12-focus-mode .topbar{flex-wrap:wrap}body.v12-focus-mode #v12ExitFocus{right:5px;bottom:10px;padding:8px 12px}}
+@media(prefers-reduced-motion:reduce){.v12-transition{animation:none!important}.v12-cinematic #sceneArt>img{transition:none!important}}
