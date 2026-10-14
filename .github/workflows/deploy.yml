@@ -14,6 +14,8 @@ on:
       - 'v11-aligned.css'
       - 'v12-immersive.js'
       - 'v12-immersive.css'
+      - 'v13-playable-focus.js'
+      - 'v13-playable-focus.css'
       - 'art-v12/**'
       - '.github/workflows/deploy.yml'
   workflow_dispatch:
@@ -149,6 +151,24 @@ jobs:
           print('MOON MART v1.2 immersion mode added, available artwork checked')
           PY
           fi
+          # v1.3: keep inventory, exploration and hints playable in immersive mode.
+          test -s v13-playable-focus.js
+          test -s v13-playable-focus.css
+          test -s _site/v12-immersive.js
+          cp v13-playable-focus.js v13-playable-focus.css _site/
+          node --check _site/v13-playable-focus.js
+          python3 - <<'PY'
+          from pathlib import Path
+          p=Path('_site/index.html')
+          html=p.read_text(encoding='utf-8')
+          for anchor in ('id="inventory"','id="hintPanel"','id="scene"','v12-immersive.js'):
+              assert anchor in html, f'Missing v1.3 dependency: {anchor}'
+          html=html.replace('</head>','<link rel="stylesheet" href="v13-playable-focus.css?v=13"></head>',1)
+          html=html.replace('</body>','<script defer src="v13-playable-focus.js?v=13"></script></body>',1)
+          assert html.count('v13-playable-focus.js')==1
+          p.write_text(html, encoding='utf-8')
+          print('v1.3 full-focus controls and backup manager deployed')
+          PY
           touch _site/.nojekyll
           echo "배포 확인:"
           find _site -maxdepth 2 -type f | sort
