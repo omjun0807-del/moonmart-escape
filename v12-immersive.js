@@ -59,11 +59,14 @@ const probe=(url)=>new Promise(resolve=>{
   img.onerror=()=>done(false);
   img.src=url;
 });
-Promise.all(Object.values(upgraded).map(x=>probe(x))).then(x=>{
- available=x.every(Boolean);
- cinematic.hidden=!available;
- if(available){help.textContent='각 구역별 독립 게임 배경 · 기존 아트로 언제든 전환할 수 있습니다.';cinematicMode=safeRead(cineKey);schedule()}
-}).catch(()=>{available=false});
+const hasPublishedArt=document.querySelector('meta[name="mm-v12-art"]')?.getAttribute('content')==='ready';
+if(hasPublishedArt){
+ Promise.all(Object.values(upgraded).map(x=>probe(x))).then(x=>{
+  available=x.every(Boolean);
+  cinematic.hidden=!available;
+  if(available){help.textContent='각 구역별 독립 게임 배경 · 기존 아트로 언제든 전환할 수 있습니다.';cinematicMode=safeRead(cineKey);schedule()}
+ }).catch(()=>{available=false});
+}
 
 function activeDesigned(){return scene.classList.contains('designed-edition')}
 function setMode(on){
