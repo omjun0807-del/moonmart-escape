@@ -1,0 +1,38 @@
+name: v1.5 Consolidated Runtime QA
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'tests/qa-v15.mjs'
+      - '.github/workflows/qa-v15.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  browser:
+    strategy:
+      fail-fast: false
+      matrix:
+        engine: [chromium, webkit]
+    runs-on: ubuntu-latest
+    timeout-minutes: 18
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install browser engine
+        run: |
+          npm install --no-save --no-audit --no-fund playwright@1.57.0
+          npx playwright install --with-deps ${{ matrix.engine }}
+      - name: Verify live v1.5 bundle, saves and entire escape
+        env:
+          TEST_ENGINE: ${{ matrix.engine }}
+        run: node tests/qa-v15.mjs
+      - name: Retain screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: moonmart-v15-${{ matrix.engine }}-screenshots
+          path: v15-*.png
+          if-no-files-found: ignore
