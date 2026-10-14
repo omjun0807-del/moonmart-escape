@@ -16,7 +16,7 @@ body.v12-focus-mode .world{padding:9px}
 body.v12-focus-mode .hotspot{min-height:44px;min-width:44px}
 body.v12-focus-mode .scene-bottom{padding-top:9px}
 body.v12-focus-mode .scene-instruction{bottom:6%}
-body.v12-focus-mode .mobile-dock{display:flex}
+body.v12-focus-mode .mobile-dock{display:none}
 body.v12-focus-mode #v12FocusButton{background:#816342;color:#fff3de;border-color:#ffe1a0}
 .v12-cinematic #sceneArt>img{width:100%;height:100%;object-fit:cover;object-position:center center;filter:contrast(1.08) saturate(.91) brightness(.76)!important}
 .scene.v12-cinematic.powered #sceneArt>img{filter:contrast(1.06) saturate(1.04) brightness(.97)!important}
